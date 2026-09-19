@@ -1,69 +1,268 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import {
+  Newspaper, Brain, ArrowRight, TrendingUp, BookOpen,
+  Zap, BarChart3, Target, Clock, Bookmark, ChevronRight
+} from 'lucide-react'
+import { getStats, getHistory } from '@/lib/storage/local'
+import { formatDate } from '@/lib/utils'
+
+const QUICK_CURRENT_TOPICS = ['Energy', 'Artificial Intelligence', 'India\'s Economy', 'Climate Change', 'Digital Payments']
+const QUICK_ABSTRACT_TOPICS = ['Black and White', 'Red', 'Sunrise', 'Zero', 'Circle']
+
+export default function HomePage() {
+  const [stats, setStats] = useState({ newsBriefs: 0, topicsAnalysed: 0, factsSaved: 0, gdTopicsPrepared: 0 })
+  const [history, setHistory] = useState<ReturnType<typeof getHistory>>([])
+
+  useEffect(() => {
+    setStats(getStats())
+    setHistory(getHistory().slice(0, 4))
+  }, [])
+
+  const today = new Date().toISOString().split('T')[0]
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-blue-400 blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-indigo-400 blur-3xl" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium text-blue-200 mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-dot" />
+              MBA GD Intelligence Platform
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">
+              GD <span className="text-blue-400">Intelligence</span>
+            </h1>
+            <p className="text-blue-200 text-lg font-medium mb-2">
+              Current Affairs → Data → Arguments → GD Excellence
+            </p>
+            <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto leading-relaxed">
+              Turn news and topics into arguments, data and speaking points. Prepare smarter for your next Group Discussion.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/daily" className="btn-primary text-base px-6 py-3">
+                <Newspaper size={16} />
+                Daily Current Affairs
+                <ArrowRight size={14} />
+              </Link>
+              <Link href="/topic" className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all text-base">
+                <Brain size={16} />
+                Topic Analysis
+              </Link>
+            </div>
+          </div>
         </div>
-      </main>
+
+        {/* Stats bar */}
+        {(stats.newsBriefs > 0 || stats.topicsAnalysed > 0) && (
+          <div className="relative border-t border-white/10 bg-white/5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+                {[
+                  { label: 'News Briefs Generated', value: stats.newsBriefs, icon: Newspaper },
+                  { label: 'Topics Analysed', value: stats.topicsAnalysed, icon: Brain },
+                  { label: 'Facts Saved', value: stats.factsSaved, icon: Bookmark },
+                  { label: 'GD Topics Prepared', value: stats.gdTopicsPrepared, icon: Target },
+                ].map(({ label, value, icon: Icon }) => (
+                  <div key={label} className="flex items-center gap-2 text-white/70">
+                    <Icon size={13} className="text-blue-400" />
+                    <span className="font-bold text-white">{value}</span>
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        {/* Two main cards */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
+          {/* DATE CARD */}
+          <div className="card-hover p-6 bg-white group">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm">
+                <Newspaper className="text-white" size={20} />
+              </div>
+              <span className="badge bg-blue-50 text-blue-700 border-blue-200 text-[11px]">Mode A</span>
+            </div>
+            <h2 className="text-xl font-bold text-slate-900 mb-1">Prepare by Date</h2>
+            <p className="text-slate-500 text-sm mb-5 leading-relaxed">
+              Get the most important GD-relevant news, facts, statistics, arguments and sources for any date.
+            </p>
+            <div className="mb-4">
+              <label className="section-title block mb-1.5">Select Date</label>
+              <input
+                type="date"
+                defaultValue={today}
+                max={today}
+                id="home-date-input"
+                className="input-base"
+              />
+            </div>
+            <Link
+              href={`/daily?date=${today}`}
+              className="btn-primary w-full justify-center"
+              onClick={(e) => {
+                const dateInput = document.getElementById('home-date-input') as HTMLInputElement
+                if (dateInput?.value) {
+                  e.preventDefault()
+                  window.location.href = `/daily?date=${dateInput.value}`
+                }
+              }}
+            >
+              <Zap size={15} />
+              Generate Daily GD Brief
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          {/* TOPIC CARD */}
+          <div className="card-hover p-6 bg-white group">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-sm">
+                <Brain className="text-white" size={20} />
+              </div>
+              <span className="badge bg-indigo-50 text-indigo-700 border-indigo-200 text-[11px]">Mode B</span>
+            </div>
+            <h2 className="text-xl font-bold text-slate-900 mb-1">Prepare by Topic</h2>
+            <p className="text-slate-500 text-sm mb-5 leading-relaxed">
+              Enter any GD topic — current, business, social, abstract or unconventional — and get a complete GD preparation framework.
+            </p>
+            <div className="mb-4">
+              <label className="section-title block mb-1.5">Enter GD Topic</label>
+              <input
+                type="text"
+                id="home-topic-input"
+                placeholder="e.g. Energy, AI, Black and White, India's Growth"
+                className="input-base"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const val = (e.target as HTMLInputElement).value.trim()
+                    if (val) window.location.href = `/topic?q=${encodeURIComponent(val)}`
+                  }
+                }}
+              />
+            </div>
+            <button
+              className="btn-primary w-full justify-center"
+              style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+              onClick={() => {
+                const input = document.getElementById('home-topic-input') as HTMLInputElement
+                const val = input?.value?.trim()
+                if (val) window.location.href = `/topic?q=${encodeURIComponent(val)}`
+              }}
+            >
+              <Brain size={15} />
+              Analyse Topic
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Quick examples */}
+        <div className="grid sm:grid-cols-2 gap-6 mb-12">
+          <div>
+            <p className="section-title mb-3">🎯 Current Topics</p>
+            <div className="flex flex-wrap gap-2">
+              {QUICK_CURRENT_TOPICS.map((topic) => (
+                <Link
+                  key={topic}
+                  href={`/topic?q=${encodeURIComponent(topic)}`}
+                  className="px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-200 hover:bg-blue-100 transition-colors"
+                >
+                  {topic}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="section-title mb-3">🌀 Abstract Topics</p>
+            <div className="flex flex-wrap gap-2">
+              {QUICK_ABSTRACT_TOPICS.map((topic) => (
+                <Link
+                  key={topic}
+                  href={`/topic?q=${encodeURIComponent(topic)}`}
+                  className="px-3 py-1.5 rounded-full bg-purple-50 text-purple-700 text-sm font-medium border border-purple-200 hover:bg-purple-100 transition-colors"
+                >
+                  {topic}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Recent history */}
+        {history.length > 0 && (
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Clock size={15} className="text-slate-400" />
+                <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wide">Recent Preparation</h2>
+              </div>
+              <Link href="/history" className="text-xs text-blue-600 font-medium hover:underline">View All</Link>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {history.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.type === 'daily' ? `/daily?date=${item.input}` : `/topic?q=${encodeURIComponent(item.input)}`}
+                  className="card-hover p-4 flex items-start gap-3 group"
+                >
+                  <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                    item.type === 'daily' ? 'bg-blue-100' : 'bg-indigo-100'
+                  }`}>
+                    {item.type === 'daily' ? (
+                      <Newspaper size={14} className="text-blue-600" />
+                    ) : (
+                      <Brain size={14} className="text-indigo-600" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-slate-900 text-sm truncate">{item.label}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {item.type === 'daily' ? 'Daily News' : 'Topic Analysis'}
+                    </p>
+                  </div>
+                  <ChevronRight size={13} className="text-slate-300 group-hover:text-blue-600 transition-colors mt-0.5" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Feature highlights */}
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 mb-6 text-center">Everything You Need to Win in GD</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { icon: BarChart3, title: 'Verified Statistics', desc: 'Data with sources, year, and context. Never fabricated.', color: 'blue' },
+              { icon: Brain, title: 'Smart Classification', desc: 'Automatically classifies topics as Concrete, Abstract, or Hybrid.', color: 'indigo' },
+              { icon: Target, title: 'GD Pointers', desc: '5 real-world + 5 generic arguments for every topic.', color: 'violet' },
+              { icon: Zap, title: 'Abstract Topics', desc: 'Turn even "Black and White" or "Zero" into 7+ analytical frameworks.', color: 'purple' },
+              { icon: BookOpen, title: 'Model Answers', desc: '30-second and 60-second natural, conversational GD answers.', color: 'teal' },
+              { icon: TrendingUp, title: 'Speaking Toolkit', desc: 'Opening lines, entry phrases, and disagreement frameworks.', color: 'emerald' },
+            ].map(({ icon: Icon, title, desc, color }) => (
+              <div key={title} className="card p-5">
+                <div className={`w-9 h-9 rounded-lg bg-${color}-100 flex items-center justify-center mb-3`}>
+                  <Icon size={16} className={`text-${color}-600`} />
+                </div>
+                <h3 className="font-semibold text-slate-900 text-sm mb-1">{title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
