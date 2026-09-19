@@ -4,6 +4,7 @@ import { getResearchService } from '@/lib/research/service'
 import { extractJSON, isValidDate, formatDate } from '@/lib/utils'
 import { dailyNewsReportSchema } from '@/lib/validation/schemas'
 import { DailyNewsReport } from '@/types'
+import { generateMockDailyNews } from '@/lib/ai/mock'
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,16 +18,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if Gemini API key is configured
+    // If Gemini API key is not configured, gracefully return high-fidelity mock data
     if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json(
-        {
-          error: 'AI service not configured.',
-          code: 'AI_NOT_CONFIGURED',
-          details: 'Please set GEMINI_API_KEY in your .env.local file. See .env.example for instructions.',
-        },
-        { status: 503 }
-      )
+      const formattedDate = formatDate(date)
+      const mockReport = generateMockDailyNews(formattedDate)
+      return NextResponse.json(mockReport)
     }
 
     const formattedDate = formatDate(date)

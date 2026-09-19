@@ -4,6 +4,7 @@ import { getResearchService } from '@/lib/research/service'
 import { extractJSON, isValidTopic } from '@/lib/utils'
 import { topicAnalysisSchema } from '@/lib/validation/schemas'
 import { TopicAnalysis } from '@/types'
+import { generateMockTopicAnalysis } from '@/lib/ai/mock'
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,14 +19,8 @@ export async function POST(request: NextRequest) {
     }
 
     if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json(
-        {
-          error: 'AI service not configured.',
-          code: 'AI_NOT_CONFIGURED',
-          details: 'Please set GEMINI_API_KEY in your .env.local file.',
-        },
-        { status: 503 }
-      )
+      const mockAnalysis = generateMockTopicAnalysis(topic)
+      return NextResponse.json(mockAnalysis)
     }
 
     const ai = getGeminiProvider()
