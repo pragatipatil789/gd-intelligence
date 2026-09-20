@@ -178,10 +178,116 @@ export interface TopicAnalysis {
 }
 
 // ========================
+// DOMAIN INTELLIGENCE MODE
+// ========================
+
+export interface DomainDevelopment {
+  rank: number
+  title: string
+  category: string
+  subCategory: string
+  whatHappened: string
+  whyItMatters: string
+  gdPointers: string[]
+  importantFacts: Array<{
+    value: string
+    context: string
+    yearDate: string
+    source: string
+  }>
+  impactFact: string
+  gdQuestions: string[]
+  businessImplication: string
+  societalImplication: string
+  balancedView: string
+  counterargument: string
+  gdIntervention: string
+  sources: Source[]
+}
+
+export interface DomainFactRow {
+  rank: number
+  fact: string
+  number: string
+  year: string
+  whyItMatters: string
+  source: string
+}
+
+export interface OpeningStrategy {
+  style: string
+  styleLabel: string
+  script: string
+}
+
+export interface ImpactStrategy {
+  category: string
+  items: string[]
+}
+
+export interface CompanyToKnow {
+  name: string
+  type: 'Indian' | 'Global'
+  whatTheyDo: string
+  whyRelevant: string
+  recentDevelopment: string
+  gdUse: string
+}
+
+export interface ReportToKnow {
+  title: string
+  publisher: string
+  year: string
+  keyFinding: string
+  gdUse: string
+  url?: string
+}
+
+export interface CrossIndustryConnection {
+  sector: string
+  connection: string
+  example: string
+}
+
+export interface DomainRapidRevision {
+  tenThingsMustKnow: string[]
+  tenNumbersMustRemember: string[]
+  fiveCompaniesMustKnow: string[]
+  fiveReportsMustKnow: string[]
+  fiveCurrentTrends: string[]
+  fivePotentialGDQuestions: string[]
+}
+
+export interface DomainAnalysis {
+  domain: string
+  description: string
+  executiveSummary: string
+  top25Developments: DomainDevelopment[]
+  top15GDThemes: Array<{ theme: string; description: string }>
+  top20Facts: DomainFactRow[]
+  openingStrategies: OpeningStrategy[]
+  impactStrategies: ImpactStrategy[]
+  crossIndustryConnections: CrossIndustryConnection[]
+  companiesToKnow: CompanyToKnow[]
+  reportsToKnow: ReportToKnow[]
+  thirtySecondSummary: string
+  sixtySecondSummary: string
+  rapidRevision: DomainRapidRevision
+  sources: Source[]
+  generatedAt: string
+  isDemo: boolean
+  researchMode: 'live' | 'general' | 'demo'
+}
+
+export interface DomainAnalysisRequest {
+  domain: string
+}
+
+// ========================
 // STORAGE
 // ========================
 
-export type SearchType = 'daily' | 'topic'
+export type SearchType = 'daily' | 'topic' | 'domain'
 
 export interface SearchHistoryItem {
   id: string
@@ -193,7 +299,7 @@ export interface SearchHistoryItem {
 
 export interface SavedItem {
   id: string
-  type: 'news' | 'topic' | 'fact' | 'gdpoint'
+  type: 'news' | 'topic' | 'domain' | 'fact' | 'gdpoint'
   title: string
   content: string
   metadata?: Record<string, string>

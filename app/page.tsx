@@ -4,13 +4,14 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import {
   Newspaper, Brain, ArrowRight, TrendingUp, BookOpen,
-  Zap, BarChart3, Target, Clock, Bookmark, ChevronRight
+  Zap, BarChart3, Target, Clock, Bookmark, ChevronRight, Compass, Sparkles
 } from 'lucide-react'
 import { getStats, getHistory } from '@/lib/storage/local'
 import { formatDate } from '@/lib/utils'
 
 const QUICK_CURRENT_TOPICS = ['Energy', 'Artificial Intelligence', 'India\'s Economy', 'Climate Change', 'Digital Payments']
 const QUICK_ABSTRACT_TOPICS = ['Black and White', 'Red', 'Sunrise', 'Zero', 'Circle']
+const QUICK_DOMAINS = ['Finance', 'Technology', 'Analytics', 'Energy', 'Healthcare']
 
 export default function HomePage() {
   const [stats, setStats] = useState({ newsBriefs: 0, topicsAnalysed: 0, factsSaved: 0, gdTopicsPrepared: 0 })
@@ -35,7 +36,7 @@ export default function HomePage() {
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium text-blue-200 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-dot" />
-              MBA GD Intelligence Platform
+              MBA Placement GD & Consulting Assistant
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">
               GD <span className="text-blue-400">Intelligence</span>
@@ -43,18 +44,22 @@ export default function HomePage() {
             <p className="text-blue-200 text-lg font-medium mb-2">
               Current Affairs → Data → Arguments → GD Excellence
             </p>
-            <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto leading-relaxed">
-              Turn news and topics into arguments, data and speaking points. Prepare smarter for your next Group Discussion.
+            <p className="text-slate-300 text-base mb-8 max-w-2xl mx-auto leading-relaxed">
+              Transform current events, abstract prompts, and industry sectors into structured arguments, verified statistics, and winning speaking interventions.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/daily" className="btn-primary text-base px-6 py-3">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link href="/daily" className="btn-primary text-sm sm:text-base px-5 py-3">
                 <Newspaper size={16} />
                 Daily Current Affairs
-                <ArrowRight size={14} />
               </Link>
-              <Link href="/topic" className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all text-base">
+              <Link href="/topic" className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-5 py-3 rounded-lg flex items-center gap-2 transition-all text-sm sm:text-base">
                 <Brain size={16} />
                 Topic Analysis
+              </Link>
+              <Link href="/domain" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold px-5 py-3 rounded-lg flex items-center gap-2 transition-all text-sm sm:text-base shadow-md">
+                <Compass size={16} />
+                Domain Intelligence
+                <ArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -85,33 +90,35 @@ export default function HomePage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        {/* Two main cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {/* DATE CARD */}
-          <div className="card-hover p-6 bg-white group">
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm">
-                <Newspaper className="text-white" size={20} />
+        {/* Three main mode cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {/* MODE A: DATE */}
+          <div className="card-hover p-6 bg-white group flex flex-col justify-between">
+            <div>
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-xs">
+                  <Newspaper className="text-white" size={20} />
+                </div>
+                <span className="badge bg-blue-50 text-blue-700 border-blue-200 text-[11px] font-bold">Mode A</span>
               </div>
-              <span className="badge bg-blue-50 text-blue-700 border-blue-200 text-[11px]">Mode A</span>
-            </div>
-            <h2 className="text-xl font-bold text-slate-900 mb-1">Prepare by Date</h2>
-            <p className="text-slate-500 text-sm mb-5 leading-relaxed">
-              Get the most important GD-relevant news, facts, statistics, arguments and sources for any date.
-            </p>
-            <div className="mb-4">
-              <label className="section-title block mb-1.5">Select Date</label>
-              <input
-                type="date"
-                defaultValue={today}
-                max={today}
-                id="home-date-input"
-                className="input-base"
-              />
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Prepare by Date</h2>
+              <p className="text-slate-500 text-xs sm:text-sm mb-4 leading-relaxed">
+                Daily GD-relevant news, verified facts, statistics, arguments and balanced perspectives for any date.
+              </p>
+              <div className="mb-4">
+                <label className="section-title block mb-1.5 text-xs">Select Date</label>
+                <input
+                  type="date"
+                  defaultValue={today}
+                  max={today}
+                  id="home-date-input"
+                  className="input-base text-xs"
+                />
+              </div>
             </div>
             <Link
               href={`/daily?date=${today}`}
-              className="btn-primary w-full justify-center"
+              className="btn-primary w-full justify-center text-xs py-2.5"
               onClick={(e) => {
                 const dateInput = document.getElementById('home-date-input') as HTMLInputElement
                 if (dateInput?.value) {
@@ -120,41 +127,43 @@ export default function HomePage() {
                 }
               }}
             >
-              <Zap size={15} />
-              Generate Daily GD Brief
-              <ArrowRight size={14} />
+              <Zap size={14} />
+              Daily GD Brief
+              <ArrowRight size={13} />
             </Link>
           </div>
 
-          {/* TOPIC CARD */}
-          <div className="card-hover p-6 bg-white group">
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-sm">
-                <Brain className="text-white" size={20} />
+          {/* MODE B: TOPIC */}
+          <div className="card-hover p-6 bg-white group flex flex-col justify-between">
+            <div>
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-xs">
+                  <Brain className="text-white" size={20} />
+                </div>
+                <span className="badge bg-indigo-50 text-indigo-700 border-indigo-200 text-[11px] font-bold">Mode B</span>
               </div>
-              <span className="badge bg-indigo-50 text-indigo-700 border-indigo-200 text-[11px]">Mode B</span>
-            </div>
-            <h2 className="text-xl font-bold text-slate-900 mb-1">Prepare by Topic</h2>
-            <p className="text-slate-500 text-sm mb-5 leading-relaxed">
-              Enter any GD topic — current, business, social, abstract or unconventional — and get a complete GD preparation framework.
-            </p>
-            <div className="mb-4">
-              <label className="section-title block mb-1.5">Enter GD Topic</label>
-              <input
-                type="text"
-                id="home-topic-input"
-                placeholder="e.g. Energy, AI, Black and White, India's Growth"
-                className="input-base"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    const val = (e.target as HTMLInputElement).value.trim()
-                    if (val) window.location.href = `/topic?q=${encodeURIComponent(val)}`
-                  }
-                }}
-              />
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Prepare by Topic</h2>
+              <p className="text-slate-500 text-xs sm:text-sm mb-4 leading-relaxed">
+                Enter any concrete or abstract GD topic and get 10 arguments, verified data, and opening statements.
+              </p>
+              <div className="mb-4">
+                <label className="section-title block mb-1.5 text-xs">Enter GD Topic</label>
+                <input
+                  type="text"
+                  id="home-topic-input"
+                  placeholder="e.g. AI, Black and White, EV"
+                  className="input-base text-xs"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const val = (e.target as HTMLInputElement).value.trim()
+                      if (val) window.location.href = `/topic?q=${encodeURIComponent(val)}`
+                    }
+                  }}
+                />
+              </div>
             </div>
             <button
-              className="btn-primary w-full justify-center"
+              className="btn-primary w-full justify-center text-xs py-2.5"
               style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
               onClick={() => {
                 const input = document.getElementById('home-topic-input') as HTMLInputElement
@@ -162,12 +171,48 @@ export default function HomePage() {
                 if (val) window.location.href = `/topic?q=${encodeURIComponent(val)}`
               }}
             >
-              <Brain size={15} />
+              <Brain size={14} />
               Analyse Topic
-              <ArrowRight size={14} />
+              <ArrowRight size={13} />
             </button>
           </div>
+
+          {/* MODE C: DOMAIN INTELLIGENCE */}
+          <div className="card-hover p-6 bg-white group flex flex-col justify-between border-2 border-blue-500/30 shadow-xs">
+            <div>
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-xs">
+                  <Compass className="text-white" size={20} />
+                </div>
+                <span className="badge bg-purple-50 text-purple-700 border-purple-200 text-[11px] font-bold">Mode C</span>
+              </div>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Domain Intelligence</h2>
+              <p className="text-slate-500 text-xs sm:text-sm mb-4 leading-relaxed">
+                Top 25 Developments, Top 20 Facts, 5 Opening Scripts, 10 Cross-Industry Links & Pre-GD Cheat Sheets.
+              </p>
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {QUICK_DOMAINS.map((dom) => (
+                  <Link
+                    key={dom}
+                    href={`/domain?d=${dom}`}
+                    className="px-2 py-1 rounded bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-[11px] font-semibold text-slate-700 transition-colors"
+                  >
+                    {dom}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <Link
+              href="/domain?d=Finance"
+              className="btn-primary w-full justify-center text-xs py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600"
+            >
+              <Compass size={14} />
+              Explore Domains
+              <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
+
 
         {/* Quick examples */}
         <div className="grid sm:grid-cols-2 gap-6 mb-12">

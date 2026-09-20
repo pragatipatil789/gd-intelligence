@@ -13,4 +13,5 @@ export interface AIProvider {
   classifyTopic(topic: string): Promise<string>
   analyseNews(date: string, searchResults: string): Promise<string>
   generateGDContent(topic: string, researchContext: string): Promise<string>
+  analyseDomain(domain: string, researchContext: string): Promise<string>
 }

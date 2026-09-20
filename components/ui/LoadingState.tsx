@@ -62,3 +62,12 @@ export const TOPIC_LOADING_STEPS: Step[] = [
   { label: 'Preparing speaking toolkit', status: 'pending' },
   { label: 'Creating revision card', status: 'pending' },
 ]
+
+export const DOMAIN_LOADING_STEPS: Step[] = [
+  { label: 'Aggregating verified macro data & industry developments...', status: 'done' },
+  { label: 'Extracting regulatory policies & corporate moves', status: 'done' },
+  { label: 'Formulating 5 persona-based opening interventions', status: 'active' },
+  { label: 'Synthesising 10 cross-industry macro connections', status: 'pending' },
+  { label: 'Assembling 10-minute placement cheat sheet', status: 'pending' },
+]
+

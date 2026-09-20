@@ -134,3 +134,102 @@ export const topicAnalysisSchema = z.object({
   revisionCard: revisionCardSchema,
   sources: z.array(sourceSchema),
 })
+
+// Domain intelligence schemas
+const domainFactSchema = z.object({
+  value: z.string(),
+  context: z.string(),
+  yearDate: z.string(),
+  source: z.string(),
+})
+
+const domainDevelopmentSchema = z.object({
+  rank: z.number(),
+  title: z.string(),
+  category: z.string(),
+  subCategory: z.string(),
+  whatHappened: z.string(),
+  whyItMatters: z.string(),
+  gdPointers: z.array(z.string()),
+  importantFacts: z.array(domainFactSchema),
+  impactFact: z.string(),
+  gdQuestions: z.array(z.string()),
+  businessImplication: z.string(),
+  societalImplication: z.string(),
+  balancedView: z.string(),
+  counterargument: z.string(),
+  gdIntervention: z.string(),
+  sources: z.array(sourceSchema),
+})
+
+const domainFactRowSchema = z.object({
+  rank: z.number(),
+  fact: z.string(),
+  number: z.string(),
+  year: z.string(),
+  whyItMatters: z.string(),
+  source: z.string(),
+})
+
+const openingStrategySchema = z.object({
+  style: z.string(),
+  styleLabel: z.string(),
+  script: z.string(),
+})
+
+const impactStrategySchema = z.object({
+  category: z.string(),
+  items: z.array(z.string()),
+})
+
+const companyToKnowSchema = z.object({
+  name: z.string(),
+  type: z.enum(['Indian', 'Global']),
+  whatTheyDo: z.string(),
+  whyRelevant: z.string(),
+  recentDevelopment: z.string(),
+  gdUse: z.string(),
+})
+
+const reportToKnowSchema = z.object({
+  title: z.string(),
+  publisher: z.string(),
+  year: z.string(),
+  keyFinding: z.string(),
+  gdUse: z.string(),
+  url: z.string().optional(),
+})
+
+const crossIndustryConnectionSchema = z.object({
+  sector: z.string(),
+  connection: z.string(),
+  example: z.string(),
+})
+
+const domainRapidRevisionSchema = z.object({
+  tenThingsMustKnow: z.array(z.string()),
+  tenNumbersMustRemember: z.array(z.string()),
+  fiveCompaniesMustKnow: z.array(z.string()),
+  fiveReportsMustKnow: z.array(z.string()),
+  fiveCurrentTrends: z.array(z.string()),
+  fivePotentialGDQuestions: z.array(z.string()),
+})
+
+export const domainAnalysisSchema = z.object({
+  domain: z.string(),
+  description: z.string(),
+  executiveSummary: z.string(),
+  top25Developments: z.array(domainDevelopmentSchema),
+  top15GDThemes: z.array(z.object({ theme: z.string(), description: z.string() })),
+  top20Facts: z.array(domainFactRowSchema),
+  openingStrategies: z.array(openingStrategySchema),
+  impactStrategies: z.array(impactStrategySchema),
+  crossIndustryConnections: z.array(crossIndustryConnectionSchema),
+  companiesToKnow: z.array(companyToKnowSchema),
+  reportsToKnow: z.array(reportToKnowSchema),
+  thirtySecondSummary: z.string(),
+  sixtySecondSummary: z.string(),
+  rapidRevision: domainRapidRevisionSchema,
+  sources: z.array(sourceSchema),
+})
+

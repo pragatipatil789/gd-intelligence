@@ -47,6 +47,10 @@ export class ResearchService {
     return this.searchNews(officialQuery, 5)
   }
 
+  async searchDomain(domain: string): Promise<ResearchContext> {
+    return this.searchNews(`${domain} India top developments trends policy data 2024 2025`, 8)
+  }
+
   private async searchWithTavily(query: string, maxResults: number): Promise<ResearchContext> {
     try {
       const response = await fetch('https://api.tavily.com/search', {

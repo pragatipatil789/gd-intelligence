@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { BookmarkCheck, Trash2, Brain, Newspaper, Quote, BarChart3, Copy, Search } from 'lucide-react'
+import { BookmarkCheck, Trash2, Brain, Newspaper, Quote, BarChart3, Copy, Search, Compass } from 'lucide-react'
 import { getSavedItems, removeSavedItem } from '@/lib/storage/local'
 import { SavedItem } from '@/types'
 import { copyToClipboard } from '@/lib/utils'
@@ -10,6 +10,7 @@ import { toast } from '@/components/ui/Toaster'
 const TYPE_ICONS: Record<SavedItem['type'], React.ElementType> = {
   news: Newspaper,
   topic: Brain,
+  domain: Compass,
   fact: BarChart3,
   gdpoint: Quote,
 }
@@ -17,9 +18,11 @@ const TYPE_ICONS: Record<SavedItem['type'], React.ElementType> = {
 const TYPE_LABELS: Record<SavedItem['type'], string> = {
   news: 'News Item',
   topic: 'Topic Analysis',
+  domain: 'Domain Intelligence',
   fact: 'Fact',
   gdpoint: 'GD Speaking Point',
 }
+
 
 export default function SavedPage() {
   const [items, setItems] = useState<SavedItem[]>([])
@@ -87,7 +90,7 @@ export default function SavedPage() {
             </div>
             {/* Type filter */}
             <div className="flex gap-2 flex-wrap">
-              {(['all', 'news', 'topic', 'fact', 'gdpoint'] as const).map((t) => (
+              {(['all', 'news', 'topic', 'domain', 'fact', 'gdpoint'] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setFilter(t)}
@@ -101,6 +104,7 @@ export default function SavedPage() {
                 </button>
               ))}
             </div>
+
           </div>
 
           {filtered.length === 0 ? (

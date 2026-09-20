@@ -3,14 +3,16 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { Brain, Menu, X, BookOpen, History, BookmarkCheck, Settings, Newspaper } from 'lucide-react'
+import { Brain, Menu, X, BookOpen, History, BookmarkCheck, Settings, Newspaper, Compass } from 'lucide-react'
 
 const navLinks = [
   { href: '/daily', label: 'Daily News', icon: Newspaper },
   { href: '/topic', label: 'Topic Analysis', icon: Brain },
-  { href: '/saved', label: 'Saved Topics', icon: BookmarkCheck },
+  { href: '/domain', label: 'Domain Intelligence', icon: Compass },
+  { href: '/saved', label: 'Notebook', icon: BookmarkCheck },
   { href: '/history', label: 'History', icon: History },
 ]
+
 
 export function Navbar() {
   const pathname = usePathname()

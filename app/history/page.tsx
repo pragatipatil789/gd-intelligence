@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { History, Trash2, Brain, Newspaper, Search, ExternalLink } from 'lucide-react'
+import { History, Trash2, Brain, Newspaper, Search, ExternalLink, Compass } from 'lucide-react'
+
 import { getHistory, removeFromHistory, clearHistory } from '@/lib/storage/local'
 import { SearchHistoryItem } from '@/types'
 import { toast } from '@/components/ui/Toaster'
@@ -91,19 +92,25 @@ export default function HistoryPage() {
                   className="card p-4 flex items-center gap-3 group animate-fade-in-up"
                 >
                   <div className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center ${
-                    item.type === 'daily' ? 'bg-blue-100' : 'bg-indigo-100'
+                    item.type === 'daily'
+                      ? 'bg-blue-100 text-blue-600'
+                      : item.type === 'domain'
+                      ? 'bg-purple-100 text-purple-600'
+                      : 'bg-indigo-100 text-indigo-600'
                   }`}>
                     {item.type === 'daily' ? (
-                      <Newspaper size={15} className="text-blue-600" />
+                      <Newspaper size={15} />
+                    ) : item.type === 'domain' ? (
+                      <Compass size={15} />
                     ) : (
-                      <Brain size={15} className="text-indigo-600" />
+                      <Brain size={15} />
                     )}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-slate-900 text-sm truncate">{item.label}</p>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      {item.type === 'daily' ? 'Daily News' : 'Topic Analysis'} ·{' '}
+                      {item.type === 'daily' ? 'Daily News' : item.type === 'domain' ? 'Domain Intelligence' : 'Topic Analysis'} ·{' '}
                       {new Date(item.createdAt).toLocaleDateString('en-IN', {
                         day: 'numeric', month: 'short', year: 'numeric',
                       })}
@@ -112,7 +119,13 @@ export default function HistoryPage() {
 
                   <div className="flex items-center gap-1">
                     <Link
-                      href={item.type === 'daily' ? `/daily?date=${item.input}` : `/topic?q=${encodeURIComponent(item.input)}`}
+                      href={
+                        item.type === 'daily'
+                          ? `/daily?date=${item.input}`
+                          : item.type === 'domain'
+                          ? `/domain?d=${encodeURIComponent(item.input)}`
+                          : `/topic?q=${encodeURIComponent(item.input)}`
+                      }
                       className="btn-ghost text-blue-600 hover:bg-blue-50 text-xs"
                     >
                       <ExternalLink size={12} /> Open
@@ -124,6 +137,7 @@ export default function HistoryPage() {
                       <Trash2 size={13} />
                     </button>
                   </div>
+
                 </div>
               ))}
             </div>

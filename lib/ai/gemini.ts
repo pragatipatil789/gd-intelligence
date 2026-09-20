@@ -218,6 +218,116 @@ Include 5-8 facts, 5 examples, 3-5 perspectives.`
 
     return this.generate({ prompt, systemPrompt, temperature: 0.4, maxTokens: 12000 })
   }
+
+  async analyseDomain(domain: string, researchContext: string): Promise<string> {
+
+    const systemPrompt = `You are an expert MBA GD intelligence analyst and industry researcher.
+Generate comprehensive domain intelligence for MBA students preparing for Group Discussions.
+NEVER fabricate statistics or invent sources. Use the research context provided.
+Return ONLY valid JSON, no markdown fences, no extra text.`
+
+    const prompt = `Generate a comprehensive DOMAIN INTELLIGENCE report for: "${domain}"
+
+Research context:
+${researchContext}
+
+Return this EXACT JSON structure (all fields required):
+{
+  "domain": "${domain}",
+  "description": "2-3 sentence description of this domain",
+  "executiveSummary": "A 100-150 word executive summary of the domain's current state and importance for MBA GDs",
+  "top25Developments": [
+    {
+      "rank": 1,
+      "title": "Development headline (concise, informative)",
+      "category": "Main category (e.g. Regulation, Technology, Business, Investment, Economy, Risk, Innovation, Government, Companies)",
+      "subCategory": "Specific sub-category (e.g. Banking → Digital Lending)",
+      "whatHappened": "2-3 sentences explaining what happened",
+      "whyItMatters": "Why this matters to industry, businesses, consumers, economy, investors",
+      "gdPointers": ["Argument 1 you can speak in GD", "Argument 2", "Argument 3", "Argument 4", "Argument 5"],
+      "importantFacts": [
+        {"value": "Statistic value", "context": "What it means", "yearDate": "Year", "source": "Source name"}
+      ],
+      "impactFact": "The single most memorable fact about this development",
+      "gdQuestions": ["Question 1?", "Question 2?", "Question 3?"],
+      "businessImplication": "How this affects businesses",
+      "societalImplication": "Wider economic/social impact",
+      "balancedView": "Balanced interpretation",
+      "counterargument": "Strongest opposing perspective",
+      "gdIntervention": "A 25-30 second speaking point you can deliver in GD",
+      "sources": [{"name": "Source name", "url": "https://...", "type": "Primary|Research|Media"}]
+    }
+  ],
+  "top15GDThemes": [
+    {"theme": "Theme name", "description": "Why this is an important GD theme from this domain"}
+  ],
+  "top20Facts": [
+    {"rank": 1, "fact": "Fact statement", "number": "The key number", "year": "Year", "whyItMatters": "Why useful in GD", "source": "Source"}
+  ],
+  "openingStrategies": [
+    {"style": "data-led", "styleLabel": "Data-Led Opening", "script": "30-second opening using a key statistic"},
+    {"style": "current-affairs", "styleLabel": "Current Affairs Opening", "script": "30-second opening connecting latest development"},
+    {"style": "business-led", "styleLabel": "Business-Led Opening", "script": "30-second opening from business/economic angle"},
+    {"style": "balanced", "styleLabel": "Balanced Opening", "script": "30-second opening presenting both sides"},
+    {"style": "strategic", "styleLabel": "Strategic Opening", "script": "30-second opening connecting to India's competitiveness"}
+  ],
+  "impactStrategies": [
+    {"category": "Facts That Will Differentiate Me", "items": ["Fact 1", "Fact 2", "Fact 3"]},
+    {"category": "Numbers I Should Remember", "items": ["Number with context 1", "Number 2", "Number 3"]},
+    {"category": "Examples I Should Quote", "items": ["Example 1", "Example 2", "Example 3"]},
+    {"category": "Companies I Should Know", "items": ["Company 1", "Company 2", "Company 3"]},
+    {"category": "Government Policies I Should Know", "items": ["Policy 1", "Policy 2", "Policy 3"]},
+    {"category": "Industry Reports I Should Know", "items": ["Report 1", "Report 2", "Report 3"]},
+    {"category": "Trends I Should Mention", "items": ["Trend 1", "Trend 2", "Trend 3"]},
+    {"category": "Counterarguments I Should Be Prepared For", "items": ["Counter 1", "Counter 2", "Counter 3"]},
+    {"category": "Smart Connections to Other Sectors", "items": ["Connection 1", "Connection 2", "Connection 3"]},
+    {"category": "Common Mistakes to Avoid", "items": ["Mistake 1", "Mistake 2", "Mistake 3"]}
+  ],
+  "crossIndustryConnections": [
+    {"sector": "Economy", "connection": "How domain connects to economy", "example": "Specific example"},
+    {"sector": "Government & Policy", "connection": "Regulatory connection", "example": "Specific example"},
+    {"sector": "Technology", "connection": "Tech connection", "example": "Specific example"},
+    {"sector": "Consumers", "connection": "Consumer impact", "example": "Specific example"},
+    {"sector": "Employment", "connection": "Jobs impact", "example": "Specific example"},
+    {"sector": "Sustainability", "connection": "ESG connection", "example": "Specific example"},
+    {"sector": "Globalisation", "connection": "Global trade connection", "example": "Specific example"},
+    {"sector": "Geopolitics", "connection": "Geopolitical angle", "example": "Specific example"},
+    {"sector": "Regulation", "connection": "Regulatory framework", "example": "Specific example"},
+    {"sector": "Innovation", "connection": "Innovation pipeline", "example": "Specific example"}
+  ],
+  "companiesToKnow": [
+    {"name": "Company name", "type": "Indian|Global", "whatTheyDo": "What they do", "whyRelevant": "Why relevant to domain", "recentDevelopment": "Recent notable development", "gdUse": "How to use in GD"}
+  ],
+  "reportsToKnow": [
+    {"title": "Report title", "publisher": "Publisher name", "year": "Year", "keyFinding": "Key finding", "gdUse": "How to use in GD", "url": "https://..."}
+  ],
+  "thirtySecondSummary": "A 30-second domain summary: Context → Current Trend → Data → Implication → Balanced conclusion",
+  "sixtySecondSummary": "A 60-second domain summary: Context → 2 major trends → data → example → risk → opportunity → conclusion",
+  "rapidRevision": {
+    "tenThingsMustKnow": ["Thing 1", "Thing 2", "Thing 3", "Thing 4", "Thing 5", "Thing 6", "Thing 7", "Thing 8", "Thing 9", "Thing 10"],
+    "tenNumbersMustRemember": ["Number + context 1", "Number 2", "Number 3", "Number 4", "Number 5", "Number 6", "Number 7", "Number 8", "Number 9", "Number 10"],
+    "fiveCompaniesMustKnow": ["Company 1", "Company 2", "Company 3", "Company 4", "Company 5"],
+    "fiveReportsMustKnow": ["Report 1", "Report 2", "Report 3", "Report 4", "Report 5"],
+    "fiveCurrentTrends": ["Trend 1", "Trend 2", "Trend 3", "Trend 4", "Trend 5"],
+    "fivePotentialGDQuestions": ["Question 1?", "Question 2?", "Question 3?", "Question 4?", "Question 5?"]
+  },
+  "sources": [
+    {"name": "Source name", "url": "https://...", "type": "Primary|Research|Media"}
+  ]
+}
+
+Requirements:
+- top25Developments: exactly 10 high-quality developments (label rank 1-10 for demo, the UI will show more from live research)
+- top15GDThemes: exactly 10 themes
+- top20Facts: exactly 10 facts
+- companiesToKnow: at least 8 companies (mix Indian and Global)
+- reportsToKnow: at least 5 reports
+- crossIndustryConnections: all 10 sectors filled
+- impactStrategies: all 10 categories filled
+- Only include verifiable facts from credible sources`
+
+    return this.generate({ prompt, systemPrompt, temperature: 0.35, maxTokens: 16000 })
+  }
 }
 
 // Singleton factory
