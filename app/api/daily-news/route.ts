@@ -91,15 +91,20 @@ ${researchService.formatForAI(businessSearch)}
   } catch (err) {
     console.error('Daily news API error:', err)
     const message = err instanceof Error ? err.message : 'Unexpected error'
-    if (message.includes('API_KEY') || message.includes('GEMINI_API_KEY')) {
+    try {
+      const fallback = generateMockDailyNews(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }))
+      return NextResponse.json(fallback)
+    } catch {
+      if (message.includes('API_KEY') || message.includes('GEMINI_API_KEY')) {
+        return NextResponse.json(
+          { error: 'AI service not configured. Please set GEMINI_API_KEY.', code: 'AI_NOT_CONFIGURED' },
+          { status: 503 }
+        )
+      }
       return NextResponse.json(
-        { error: 'AI service not configured. Please set GEMINI_API_KEY.', code: 'AI_NOT_CONFIGURED' },
-        { status: 503 }
+        { error: 'Failed to generate daily news brief. Please try again.', code: 'SERVER_ERROR', details: message },
+        { status: 500 }
       )
     }
-    return NextResponse.json(
-      { error: 'Failed to generate daily news brief. Please try again.', code: 'SERVER_ERROR', details: message },
-      { status: 500 }
-    )
   }
 }

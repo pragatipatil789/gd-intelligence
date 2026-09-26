@@ -5,7 +5,7 @@ export class GeminiProvider implements AIProvider {
   private client: GoogleGenerativeAI
   private modelName: string
 
-  constructor(apiKey: string, modelName = 'gemini-3.8-flash') {
+  constructor(apiKey: string, modelName = process.env.GEMINI_MODEL || 'gemini-3.8-flash') {
     this.client = new GoogleGenerativeAI(apiKey)
     this.modelName = modelName
   }
