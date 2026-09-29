@@ -1,28 +1,27 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 import { AIProvider, AIGenerateOptions } from './provider'
 
 export class GeminiProvider implements AIProvider {
-  private client: GoogleGenerativeAI
+  private client: GoogleGenAI
   private modelName: string
 
   constructor(apiKey: string, modelName = process.env.GEMINI_MODEL || 'gemini-3.8-flash') {
-    this.client = new GoogleGenerativeAI(apiKey)
+    this.client = new GoogleGenAI({ apiKey })
     this.modelName = modelName
   }
 
   async generate(options: AIGenerateOptions): Promise<string> {
-    const model = this.client.getGenerativeModel({
+    const response = await this.client.models.generateContent({
       model: this.modelName,
-      generationConfig: {
+      contents: options.prompt,
+      config: {
         temperature: options.temperature ?? 0.3,
         maxOutputTokens: options.maxTokens ?? 8192,
+        systemInstruction: options.systemPrompt,
       },
-      systemInstruction: options.systemPrompt,
     })
 
-    const result = await model.generateContent(options.prompt)
-    const response = result.response
-    return response.text()
+    return response.text ?? ''
   }
 
   async classifyTopic(topic: string): Promise<string> {
